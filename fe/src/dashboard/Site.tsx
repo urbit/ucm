@@ -126,6 +126,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
   }
 
   async function save() {
+    setSaving(true);
     const ns: Site = {
       description: siteDesc,
       icon: siteIcon,
@@ -139,8 +140,17 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
       hidden,
     };
     const res = await dashIO().createSite(ns);
-    sync();
+    if (res) {
+      sync();
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+      }, 2000);
+    }
+    setSaving(false);
   }
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   // drag
   function reorder(result: DropResult<string>) {
@@ -296,12 +306,23 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
             />
           </AccordionDetails>
         </Accordion>*/}
-
-        <Centered>
-          <Button sx={{ my: 4 }} variant="contained" onClick={save}>
-            Save Changes
-          </Button>
-        </Centered>
+        {saved && (
+          <Typography align="center" color="green">
+            Changes saved
+          </Typography>
+        )}
+        {saving ? (
+          <Centered>
+            {" "}
+            <CircularProgress />
+          </Centered>
+        ) : (
+          <Centered>
+            <Button sx={{ my: 4 }} variant="contained" onClick={save}>
+              Save Changes
+            </Button>
+          </Centered>
+        )}
       </Container>
     </Box>
   );

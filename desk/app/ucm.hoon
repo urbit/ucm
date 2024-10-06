@@ -30,7 +30,7 @@
 ++  on-init
   ^-  (quip card _this)
   :_  this
-  :_  ~  (add-eyre-binding [dap.bowl ~])
+  :_  ~  (add-eyre-binding:hd [dap.bowl ~])
 ::
 ++  on-save
   !>(state)
@@ -278,6 +278,7 @@
 ::  cards
 ++  add-eyre-binding
   |=  =path  ^-  card
+  ~&  >  adding-binding=[path dap.bowl]
   [%pass /eyre/connect %arvo %e %connect [~ path] dap.bowl]  
   
 ++  wipe-eyre-bindings  
