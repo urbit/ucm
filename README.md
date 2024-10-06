@@ -1,0 +1,11 @@
+# Urbit Community Manager
+
+Create self-hosted communities on Urbit.
+Currently supports Blog, Static sites, Chat, Forum, Radio and Wiki apps.
+Supports EAuth and Metamask login with Urbit ID.
+
+
+### Installation
+Two options:
+1.- On dojo run `|install ~dister-dozzod-sortug %ucm`
+2.- Symlink the `desk` folder to a folder inside your pier, then commit and `|install our <name>`.
