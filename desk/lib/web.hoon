@@ -39,6 +39,8 @@
       %js    (js-response:gen:server u.file)
       %css   (css-response:gen:server u.file)
       %png   (png-response:gen:server u.file)
+      %woff  (woff-response:gen:server u.file)
+      %woff2  (woff2-response:gen:server u.file)
     ==
 
 

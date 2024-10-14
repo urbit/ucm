@@ -139,6 +139,11 @@
     |=  =octs
     ^-  simple-payload:http
     [[200 [['content-type' 'font/woff2'] max-1-wk ~]] `octs]
+  ++  woff-response
+    =|  cache=?
+    |=  =octs
+    ^-  simple-payload:http
+    [[200 [['content-type' 'font/woff'] max-1-wk ~]] `octs]
   ::
   ++  json-response
     =|  cache=_|
