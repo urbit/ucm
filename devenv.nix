@@ -11,6 +11,7 @@
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git
+    nodePackages.typescript
     nodePackages.typescript-language-server
     nodePackages.vscode-json-languageserver
     nodePackages.prettier
