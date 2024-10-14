@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useLocation, Link } from "wouter";
+import { useState } from 'react';
+import { useLocation, Link } from 'wouter';
 import {
   Alert,
   Button,
@@ -12,28 +12,28 @@ import {
   CardContent,
   Stack,
   CircularProgress,
-} from "@mui/material";
-import useStore from "../logic/store";
-import { AppBunt, Site } from "../logic/types";
-import { enkebab } from "../logic/utils";
-import { Centered, Flex, WholeFlex } from "../ui/Components";
+} from '@mui/material';
+import useStore from '../logic/store';
+import { AppBunt, Site } from '../logic/types';
+import { enkebab } from '../logic/utils';
+import { Centered, Flex, WholeFlex } from '../ui/Components';
 
 export default function () {
-  const { sync, dashIO } = useStore(["sync", "dashIO"]);
+  const { sync, dashIO } = useStore(['sync', 'dashIO']);
   const [location, navigate] = useLocation();
   const [loading, setLoading] = useState(false);
-  const [siteName, setSite] = useState("");
-  const [sitePath, setPath] = useState("/");
-  const [siteDesc, setDesc] = useState("");
-  const [error, setError] = useState("");
+  const [siteName, setSite] = useState('');
+  const [sitePath, setPath] = useState('/');
+  const [siteDesc, setDesc] = useState('');
+  const [error, setError] = useState('');
   function setSitePath(e: React.ChangeEvent<HTMLInputElement>) {
-    const input = e.currentTarget.value.slice(1).replace("/", "");
-    setPath("/" + input);
+    const input = e.currentTarget.value.slice(1).replace('/', '');
+    setPath('/' + input);
   }
 
   // TODO add automated name change logic if site already exists
   async function create() {
-    const { createGroup, createSite } = dashIO();
+    const { createGroup, createSite, createChannel } = dashIO();
     if (!siteName) {
       setError("Site name can't be empty");
       return;
@@ -41,29 +41,43 @@ export default function () {
     setLoading(true);
     // Create Group first
     // Then create site on agent
+    // Add one about page automatically
     const site: Site = {
       sitename: siteName,
       description: siteDesc,
       groupname: enkebab(siteName),
       binding: sitePath,
-      icon: "",
-      home: "",
-      css: "",
-      apps: AppBunt,
-      "app-order": [],
+      icon: '',
+      home: '',
+      css: '',
+      apps: { ...AppBunt, static: { About: '#About this site' } },
+      'app-order': [],
       hidden: false,
     };
     const res = await createSite(site);
     if (res) {
       await createGroup(siteName);
+      // Add one chat and one forum
+      await createChannel(
+        site.groupname,
+        `${site.sitename} Chat`,
+        `Main Chat room for site ${site.sitename}`,
+        'chat',
+      );
+      await createChannel(
+        site.groupname,
+        `${site.sitename} Forum`,
+        `Main Forum for site ${site.sitename}`,
+        'diary',
+      );
       await sync();
-      navigate("/");
-      console.log(res, "res");
+      navigate('/');
+      console.log(res, 'res');
     }
   }
   return (
-    <WholeFlex sx={{ overflowY: "auto", height: "100vh" }}>
-      <Container>
+    <WholeFlex sx={{ overflowY: 'auto', height: '100vh' }}>
+      <Container maxWidth="md">
         <Card sx={{ mt: 4 }}>
           <CardHeader title="Create a New Site" />
           <CardContent>
@@ -72,7 +86,7 @@ export default function () {
             </Typography>
 
             {error && <Alert severity="error">{error}.</Alert>}
-            <Stack direction="column" useFlexGap sx={{ my: 5, gap: "2rem" }}>
+            <Stack direction="column" useFlexGap sx={{ my: 5, gap: '2rem' }}>
               <TextField
                 label="Site Name"
                 variant="standard"
