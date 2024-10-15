@@ -256,9 +256,9 @@ export function AddAppModal({ kind, site }: { kind: AppType; site: Site }) {
       <Button variant="contained" onClick={create}>
         Create
       </Button>
-      <Link to="/">
-        <Button variant="text">Cancel</Button>
-      </Link>
+      <Button onClick={() => setModal(null)} variant="text">
+        Cancel
+      </Button>
     </WholeFlex>
   );
 }
