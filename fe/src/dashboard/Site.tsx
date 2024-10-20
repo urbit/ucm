@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   AppType,
   Apps,
@@ -8,7 +8,7 @@ import {
   Ship,
   Site,
   Wiki,
-} from "../logic/types";
+} from '../logic/types';
 import {
   Button,
   TextField,
@@ -29,33 +29,29 @@ import {
   List,
   ListItem,
   Divider,
-} from "@mui/material";
-import useStore from "../logic/store";
-import {
-  AddAppModal,
-  ConfirmationModal,
-  StaticPageModal,
-} from "../modals/Modal";
-import { ChannelType, Group } from "../logic/types-tlon";
-import { APP_NAME, RADIO_SHIP, WIKI_SHIP } from "../logic/constants";
-import { useLocation } from "wouter";
-import { capitalize, doubleCheckApps, delay, enkebab } from "../logic/utils";
+} from '@mui/material';
+import useStore from '../logic/store';
+import { AddAppModal, ConfirmationModal, StaticPageModal } from '../modals/Modal';
+import { ChannelType, Group } from '../logic/types-tlon';
+import { APP_NAME, RADIO_SHIP, WIKI_SHIP } from '../logic/constants';
+import { useLocation } from 'wouter';
+import { capitalize, doubleCheckApps, delay, enkebab } from '../logic/utils';
 
-import DragContainer from "../ui/Drag.tsx";
-import { DropResult } from "@hello-pangea/dnd";
-import { Centered, SpreadRow } from "../ui/Components.tsx";
-import { ExpandMore } from "@mui/icons-material";
+import DragContainer from '../ui/Drag.tsx';
+import { DropResult } from '@hello-pangea/dnd';
+import { Centered, SpreadRow } from '../ui/Components.tsx';
+import { ExpandMore } from '@mui/icons-material';
 
 export function SiteDash({ site, group }: { site: Site; group: Group }) {
   useEffect(() => {
     setChans();
     // const apporder = ["blog", "chat", "forum", "radio", "wiki", "about"];
-    const order = [...site["app-order"]];
-    if (!order.includes("blog")) order.push("blog");
-    if (!order.includes("chat")) order.push("chat");
-    if (!order.includes("forum")) order.push("forum");
-    if (!order.includes("radio")) order.push("radio");
-    if (!order.includes("wiki")) order.push("wiki");
+    const order = [...site['app-order']];
+    if (!order.includes('blog')) order.push('blog');
+    if (!order.includes('chat')) order.push('chat');
+    if (!order.includes('forum')) order.push('forum');
+    if (!order.includes('radio')) order.push('radio');
+    if (!order.includes('wiki')) order.push('wiki');
     for (const title of Object.keys(site.apps.static)) {
       const key = `static/${title}` as AppType;
       if (!order.includes(key)) order.push(key);
@@ -65,7 +61,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
   function setChans() {
     const chans = Object.entries(group.channels);
     const agg = chans.reduce((acc: Channels, [nam, chan]) => {
-      const [kind, ship, name] = nam.split("/");
+      const [kind, ship, name] = nam.split('/');
       const host = ship as Ship;
       const meta: RichMetadata = {
         ...chan.meta,
@@ -73,11 +69,10 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
         host,
         kind: kind as ChannelType,
       };
-      if (kind === "chat") return { ...acc, chats: [...acc.chats, meta] };
-      else if (kind === "diary" && name.includes("ucm-ublog"))
+      if (kind === 'chat') return { ...acc, chats: [...acc.chats, meta] };
+      else if (kind === 'diary' && name.includes('ucm-ublog'))
         return { ...acc, blog: meta };
-      else if (kind === "diary")
-        return { ...acc, forums: [...acc.forums, meta] };
+      else if (kind === 'diary') return { ...acc, forums: [...acc.forums, meta] };
       else return acc;
     }, ChannelsBunt);
     setChannels(agg);
@@ -97,14 +92,14 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
   }
 
   const { setModal, dashIO, pikes, sync } = useStore([
-    "setModal",
-    "dashIO",
-    "pikes",
-    "sync",
+    'setModal',
+    'dashIO',
+    'pikes',
+    'sync',
   ]);
   const [wikis, setWiki] = useState<Wiki[] | null>(null);
   const [modal, showModal] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [homeMarkdown, setHome] = useState(site.home);
   const [customPalette, setPalette] = useState(site.css);
   const [siteName, setSite] = useState(site.sitename);
@@ -121,8 +116,8 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
   }, [channels, site, pikes]);
 
   function setSitePath(e: React.ChangeEvent<HTMLInputElement>) {
-    const input = e.currentTarget.value.slice(1).replace("/", "");
-    setPath("/" + input);
+    const input = e.currentTarget.value.slice(1).replace('/', '');
+    setPath('/' + input);
   }
 
   async function save() {
@@ -135,7 +130,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
       binding: sitePath,
       sitename: siteName,
       groupname: enkebab(siteName),
-      "app-order": appOrder,
+      'app-order': appOrder,
       apps,
       hidden,
     };
@@ -170,7 +165,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
     const res = await dashIO().delSite(site.binding);
     if (res) {
       await sync();
-      navigate("/");
+      navigate('/');
     }
   }
   function confirmDestroy() {
@@ -178,8 +173,8 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
   }
 
   return (
-    <Box sx={{ overflowY: "auto", height: "100%" }}>
-      <Container maxWidth="lg">
+    <Box sx={{ overflowY: 'auto', height: '100%' }}>
+      <Container maxWidth="md">
         <SpreadRow sx={{ my: 3 }}>
           {loading ? (
             <CircularProgress />
@@ -187,7 +182,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
             <Button
               onClick={confirmDestroy}
               color="error"
-              sx={{ width: "max-content" }}
+              sx={{ width: 'max-content' }}
               variant="contained"
             >
               Destroy
@@ -202,10 +197,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
             <Button variant="contained">Open</Button>
           </a>
         </SpreadRow>
-        <Box
-          m={3}
-          sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-        >
+        <Box m={3} sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <TextField
             label="Site Name"
             variant="standard"
@@ -228,10 +220,10 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
             value={siteDesc}
             onChange={(e) => setDesc(e.currentTarget.value)}
           />
-          <Box sx={{ display: "flex", gap: "2rem" }}>
+          <Box sx={{ display: 'flex', gap: '2rem' }}>
             <Avatar src={siteIcon} variant="square" />
             <TextField
-              label="Site Icon"
+              label="Site Icon URL"
               variant="standard"
               fullWidth
               value={siteIcon}
@@ -244,11 +236,11 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
             Apps
           </Typography>
           <div
-            style={{ height: "20rem", marginTop: "2rem", marginBottom: "2rem" }}
+            style={{ height: '20rem', marginTop: '2rem', marginBottom: '2rem' }}
             className="dnd-wrapper"
           >
             <DragContainer
-              apps={[...appOrder, "static/"]}
+              apps={[...appOrder, 'static/']}
               buildCard={cardWrapper({ ...site, apps }, channels, wikis)}
               onEnd={reorder}
             />
@@ -263,10 +255,10 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
               Write some Markdown to display in the root page of your site
             </Typography>
             <TextField
-              sx={{ mt: 3, height: "400px" }}
+              sx={{ mt: 3, height: '400px' }}
               slotProps={{
-                input: { style: { height: "400px" } },
-                htmlInput: { style: { height: "400px" } },
+                input: { style: { height: '400px', overflowY: 'scroll' } },
+                htmlInput: { style: { height: '400px' } },
               }}
               multiline
               fullWidth
@@ -313,7 +305,7 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
         )}
         {saving ? (
           <Centered>
-            {" "}
+            {' '}
             <CircularProgress />
           </Centered>
         ) : (
@@ -331,32 +323,32 @@ export function SiteDash({ site, group }: { site: Site; group: Group }) {
 function cardWrapper(site: Site, channels: Channels, wiki: Wiki[] | null) {
   return function buildCard(a: AppType) {
     const { enabled, content, actions } =
-      a === "blog"
+      a === 'blog'
         ? buildBlogCard(site, channels)
-        : a === "chat"
+        : a === 'chat'
           ? buildChatCard(site)
-          : a === "forum"
+          : a === 'forum'
             ? buildForumCard(site)
-            : a === "radio"
+            : a === 'radio'
               ? buildRadioCard(site)
-              : a === "wiki"
+              : a === 'wiki'
                 ? buildWikiCard(site, wiki)
                 : buildStaticCard(a, site);
 
     const opacity = enabled ? 1 : 0.7;
-    const title = a.startsWith("static") ? "Static" : capitalize(a);
+    const title = a.startsWith('static') ? 'Static' : capitalize(a);
     return (
       <Card
         sx={{
           borderRadius: 0,
-          textAlign: "center",
-          height: "100%",
-          overflow: "hidden",
-          width: "8rem",
+          textAlign: 'center',
+          height: '100%',
+          overflow: 'hidden',
+          width: '8rem',
           opacity,
-          display: "flex",
-          flexDirection: "column",
-          padding: "0.35rem",
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '0.35rem',
           gap: 0,
         }}
       >
@@ -364,15 +356,15 @@ function cardWrapper(site: Site, channels: Channels, wiki: Wiki[] | null) {
         <Divider />
         <CardContent
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
             flexGrow: 1,
-            overflowY: "auto",
-            overflowX: "hidden",
-            scrollbarWidth: "none",
-            "&::-webkit-scrollbar": {
-              display: "none",
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
             },
           }}
         >
@@ -381,9 +373,9 @@ function cardWrapper(site: Site, channels: Channels, wiki: Wiki[] | null) {
         <Divider />
         <CardActions
           sx={{
-            justifyContent: "center",
-            margin: "0 auto",
-            height: "1.8rem",
+            justifyContent: 'center',
+            margin: '0 auto',
+            height: '1.8rem',
           }}
         >
           {actions}
@@ -394,7 +386,7 @@ function cardWrapper(site: Site, channels: Channels, wiki: Wiki[] | null) {
 }
 
 function buildBlogCard(site: Site, channels: Channels) {
-  const { setModal, dashIO, sync } = useStore(["setModal", "dashIO", "sync"]);
+  const { setModal, dashIO, sync } = useStore(['setModal', 'dashIO', 'sync']);
   const [loading, setLoading] = useState(false);
   function addBlog() {
     setModal(<AddAppModal kind="blog" site={site} />);
@@ -415,12 +407,12 @@ function buildBlogCard(site: Site, channels: Channels) {
   ) : !enabled ? (
     <Button onClick={() => toggle(channels.blog?.name!)}>Enable</Button>
   ) : (
-    <Button onClick={() => toggle("")}>Disable</Button>
+    <Button onClick={() => toggle('')}>Disable</Button>
   );
   return { enabled, content, actions };
 }
 function buildChatCard(site: Site) {
-  const { setModal } = useStore(["setModal"]);
+  const { setModal } = useStore(['setModal']);
   function addChat() {
     setModal(<AddAppModal kind="chat" site={site} />);
   }
@@ -428,7 +420,7 @@ function buildChatCard(site: Site) {
   const content = !enabled ? (
     <Typography>No chats</Typography>
   ) : (
-    <List sx={{ height: "100%" }} disablePadding>
+    <List sx={{ height: '100%' }} disablePadding>
       {site.apps.chat.map((c, i) => (
         <ListItem key={c + i} sx={{ p: 0 }}>
           <Box>-{c}</Box>
@@ -440,7 +432,7 @@ function buildChatCard(site: Site) {
   return { enabled, content, actions };
 }
 function buildForumCard(site: Site) {
-  const { setModal } = useStore(["setModal"]);
+  const { setModal } = useStore(['setModal']);
   function addForum() {
     setModal(<AddAppModal kind="forum" site={site} />);
   }
@@ -448,7 +440,7 @@ function buildForumCard(site: Site) {
   const content = !enabled ? (
     <Typography>No forums</Typography>
   ) : (
-    <List sx={{ height: "100%" }} disablePadding>
+    <List sx={{ height: '100%' }} disablePadding>
       {site.apps.forum.map((c, i) => (
         <ListItem key={c + i} sx={{ p: 0 }}>
           <Box>-{c}</Box>
@@ -461,7 +453,7 @@ function buildForumCard(site: Site) {
 }
 
 function buildRadioCard(site: Site) {
-  const { sync, dashIO, pikes } = useStore(["sync", "dashIO", "pikes"]);
+  const { sync, dashIO, pikes } = useStore(['sync', 'dashIO', 'pikes']);
   const [loading, setLoading] = useState(false);
   const { createSite, scryPikes } = dashIO();
   async function toggle(bool: boolean) {
@@ -473,7 +465,7 @@ function buildRadioCard(site: Site) {
   }
   async function install() {
     setLoading(true);
-    const res = await dashIO().installApp(RADIO_SHIP, "radio");
+    const res = await dashIO().installApp(RADIO_SHIP, 'radio');
     await delay(3000);
     const pikes = await scryPikes();
     if (pikes?.radio?.sync?.ship === RADIO_SHIP) setLoading(false);
@@ -499,10 +491,10 @@ function buildRadioCard(site: Site) {
   return { enabled, content, actions };
 }
 function buildWikiCard(site: Site, wiki: Wiki[] | null) {
-  const { sync, dashIO, pikes } = useStore(["sync", "dashIO", "pikes"]);
+  const { sync, dashIO, pikes } = useStore(['sync', 'dashIO', 'pikes']);
   const [loading, setLoading] = useState(false);
   async function disable() {
-    const ns = { ...site, apps: { ...site.apps, wiki: "" } };
+    const ns = { ...site, apps: { ...site.apps, wiki: '' } };
     const res = await dashIO().createSite(ns);
     sync();
   }
@@ -513,7 +505,7 @@ function buildWikiCard(site: Site, wiki: Wiki[] | null) {
   }
   async function install() {
     setLoading(true);
-    const res = await dashIO().installApp(WIKI_SHIP, "wiki");
+    const res = await dashIO().installApp(WIKI_SHIP, 'wiki');
     sync();
   }
   const pike = pikes.wiki;
@@ -524,8 +516,8 @@ function buildWikiCard(site: Site, wiki: Wiki[] | null) {
     wiki.map((w) => (
       <Typography
         sx={{
-          cursor: "pointer",
-          border: site.apps.wiki === w.id ? "1px solid black" : "none",
+          cursor: 'pointer',
+          border: site.apps.wiki === w.id ? '1px solid black' : 'none',
         }}
         onClick={() => toggleWiki(w.id)}
         key={w.id}
@@ -544,12 +536,12 @@ function buildWikiCard(site: Site, wiki: Wiki[] | null) {
 }
 
 function buildStaticCard(title: string, site: Site) {
-  const { setModal } = useStore(["setModal"]);
+  const { setModal } = useStore(['setModal']);
   async function openEditor() {
     const text = site.apps.static[name];
     setModal(<StaticPageModal name={name} text={text} site={site} />);
   }
-  const [_, name] = title.split("/");
+  const [_, name] = title.split('/');
   if (name) {
     const content = <Typography>{name}</Typography>;
     const actions = <Button onClick={openEditor}>Edit</Button>;

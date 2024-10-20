@@ -1,6 +1,6 @@
-import useStore from "../logic/store";
-import { Site } from "../logic/types";
-import { useLocation, Link as RouterLink } from "wouter";
+import useStore from '../logic/store';
+import { Site } from '../logic/types';
+import { useLocation, Link as RouterLink } from 'wouter';
 import {
   Card,
   CardContent,
@@ -10,21 +10,25 @@ import {
   Button,
   Container,
   Stack,
-} from "@mui/material";
-import { DEFAULT_ICON } from "../logic/constants";
-import { Centered, Row, SpreadRow } from "../ui/Components";
-import * as muiStyles from "@mui/material/styles";
-import { ThemeToggle } from "../ui/theme";
+} from '@mui/material';
+import { DEFAULT_ICON } from '../logic/constants';
+import { Centered, Row, SpreadRow } from '../ui/Components';
+import * as muiStyles from '@mui/material/styles';
+import { ThemeToggle } from '../ui/theme';
+import { useEffect } from 'react';
 // import { ColorToggle } from "../ui/theme";
 
 export default function () {
   const using = muiStyles.useColorScheme();
   const [_location, navigate] = useLocation();
-  const { state } = useStore(["state"]);
+  const { state } = useStore(['state']);
   const list = Object.values(state);
   function create() {
-    navigate("/create-site");
+    navigate('/create-site');
   }
+  useEffect(() => {
+    if (Object.values(state).length === 0) create();
+  }, [state]);
   return (
     <Container maxWidth="md" sx={{ p: 5 }}>
       <SpreadRow>
@@ -38,16 +42,12 @@ export default function () {
       <Typography align="center" variant="h3">
         Your Sites
       </Typography>
-      <Stack
-        direction={"column"}
-        useFlexGap
-        sx={{ my: 2, gap: 2, minHeight: "30vw" }}
-      >
+      <Stack direction={'column'} useFlexGap sx={{ my: 2, gap: 2, minHeight: '30vw' }}>
         {list.length !== 0 ? (
           list.map((site) => <SiteCard key={site.groupname} site={site} />)
         ) : (
           <Typography variant="h5" sx={{ mt: 5 }} align="center">
-            Nothing yet{" "}
+            Nothing yet{' '}
           </Typography>
         )}
       </Stack>
@@ -61,7 +61,7 @@ export default function () {
 }
 
 function SiteCard({ site }: { site: Site }) {
-  console.log(site, "site");
+  console.log(site, 'site');
   const icon = site.icon || DEFAULT_ICON;
   // Responsive font sizes huh
   return (
@@ -70,12 +70,12 @@ function SiteCard({ site }: { site: Site }) {
         <Card variant="outlined">
           <CardMedia src={icon} />
           <CardContent>
-            <Stack direction="row" useFlexGap sx={{ gap: "2rem" }}>
+            <Stack direction="row" useFlexGap sx={{ gap: '2rem' }}>
               <img
-                style={{ width: 40, height: 40, border: "1px solid primary" }}
+                style={{ width: 40, height: 40, border: '1px solid primary' }}
                 src={site.icon || DEFAULT_ICON}
               />
-              <Typography sx={{ typography: { sm: "h4", xs: "body1" } }}>
+              <Typography sx={{ typography: { sm: 'h4', xs: 'body1' } }}>
                 {site.sitename}
               </Typography>
             </Stack>

@@ -17,7 +17,7 @@
     "@hello-pangea/dnd": "^17.0.0",
     "@mui/icons-material": "^6.1.0",
     "@mui/material": "^6.1.0",
-    "@urbit/http-api": "file:../../js-http-api",
+    "@urbit/http-api": "file:../http-api",
     "any-ascii": "^0.3.2",
     "bn.js": "^5.2.1",
     "invariant": "^2.2.4",

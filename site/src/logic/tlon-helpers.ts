@@ -544,7 +544,7 @@ function markdownListToTlon(m: Tokens.ListItem): Inline[] {
 function parsePlainText(s: string): Inline[] {
   let data: tokenizerData = [s, []];
   data = extract_mention(data);
-  data = extract_url(data);
+  // data = extract_url(data);
   return extract_text(data);
 }
 // tokenizer adapted from graph-store implementation

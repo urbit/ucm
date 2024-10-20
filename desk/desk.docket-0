@@ -2,10 +2,10 @@
   title+'Urbit Community Manager'
   info+'Self-host your whole community on Urbit'
   color+0xef.f0f4
-  version+[0 1 0]
+  version+[0 1 1]
   website+'https://sortug.com'
   license+'MIT'
   image+'https://s3.sortug.com/img/icons/ucm-logo.png'
   base+'ucm'
-  glob-http+['https://s3.sortug.com/globs/glob-0v2.4bhli.vifom.mfvn7.4l08q.f8mnp.glob' 0v2.4bhli.vifom.mfvn7.4l08q.f8mnp]
+  glob-http+['https://s3.sortug.com/globs/glob-0v4.0a1ts.a8fgm.8ap73.0vl8l.knn70.glob' 0v4.0a1ts.a8fgm.8ap73.0vl8l.knn70]
 ==
